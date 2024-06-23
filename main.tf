@@ -52,7 +52,7 @@ resource "aws_security_group" "allow_ssh_now" {
 resource "aws_instance" "example" {
   ami           = "ami-08a0d1e16fc3f61ea" # Replace with your desired AMI ID
   instance_type = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.allow_ssh_now.id]
+  vpc_security_group_ids = [aws_security_group.allow_ssh_now.ids[0]]
   subnet_id     = data.aws_subnets.available.ids[0]
   security_groups = [aws_security_group.allow_ssh_now.name]
   key_name = var.ssh_key_name
