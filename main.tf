@@ -32,7 +32,7 @@ data "aws_subnets" "default" {
 
 # Use the first subnet ID from the list of default subnets
 resource "aws_instance" "example" {
-  ami           = "ami-0c55b159cbfafe1f0"
+  ami           = "ami-08a0d1e16fc3f61ea"
   instance_type = "t2.micro"
   subnet_id     = data.aws_subnets.default.ids[0]
 
