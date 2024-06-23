@@ -79,7 +79,7 @@ resource "aws_key_pair" "deployer" {
 }
 
 resource "aws_instance" "web" {
-  ami           = "ami-0c55b159cbfafe1f0" # Amazon Linux 2 AMI (HVM), SSD Volume Type
+  ami           = "ami-08a0d1e16fc3f61ea" # Amazon Linux 2 AMI (HVM), SSD Volume Type
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.main.id
   key_name      = aws_key_pair.deployer.key_name
