@@ -29,7 +29,7 @@ data "aws_subnets" "available" {
 }
 
 # Create a security group to allow inbound SSH traffic
-resource "aws_security_group" "allow_ssh" {
+resource "aws_security_group" "allow_ssh_now" {
   name        = "allow_ssh"
   description = "Allow inbound SSH traffic"
   vpc_id      = data.aws_vpcs.available.ids[0]
