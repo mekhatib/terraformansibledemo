@@ -17,28 +17,35 @@ provider "aws" {
   region = var.region
 }
 
+# Data source to get the default VPC
 data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
+# Data source to get the subnets in the default VPC
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
 }
 
-resource "aws_instance" "web" {
-  ami           = "ami-0c55b159cbfafe1f0" # Change to your desired AMI
+# Use the first subnet ID from the list of default subnets
+resource "aws_instance" "example" {
+  ami           = "ami-0c55b159cbfafe1f0"
   instance_type = "t2.micro"
-  subnet_id     = data.aws_subnet_ids.default.ids[0] # Use the first subnet ID
+  subnet_id     = data.aws_subnets.default.ids[0]
 
   tags = {
-    Name = "WebServer"
+    Name = "example-instance"
   }
+
 
   provisioner "local-exec" {
     command = "ansible-playbook -i inventory.ini playbook.yml"
   }
-}
 
+}
 output "instance_id" {
   value = aws_instance.web.id
 }
