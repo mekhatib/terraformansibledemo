@@ -32,7 +32,7 @@ data "aws_subnets" "available" {
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
   description = "Allow inbound SSH traffic"
-  vpc_id      = data.aws_vpc.selected.id
+  vpc_id      = data.aws_vpcs.available.ids[0]
 
   ingress {
     from_port   = 22
