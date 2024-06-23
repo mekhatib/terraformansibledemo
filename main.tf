@@ -18,7 +18,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "example" {
-  ami           = "ami-07f92c21ece77c17d" # Replace with your desired AMI ID
+  ami           = "ami-08a0d1e16fc3f61ea" # Replace with your desired AMI ID
   instance_type = "t2.micro"
 
   key_name = var.ssh_key_name
