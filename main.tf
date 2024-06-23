@@ -40,9 +40,26 @@ resource "aws_instance" "example" {
     Name = "example-instance"
   }
 
+   provisioner "remote-exec" {
+    inline = [
+      "if [ ! -f /tmp/playbook.yml ]; then",
+      "  echo '---' > /tmp/playbook.yml",
+      "  echo '- hosts: localhost' >> /tmp/playbook.yml",
+      "  echo '  tasks:' >> /tmp/playbook.yml",
+      "  echo '    - name: Ensure Apache is installed' >> /tmp/playbook.yml",
+      "  echo '      apt:' >> /tmp/playbook.yml",
+      "  echo '        name: apache2' >> /tmp/playbook.yml",
+      "  echo '        state: present' >> /tmp/playbook.yml",
+      "fi",
+      "ansible-playbook /tmp/playbook.yml"
+    ]
 
-  provisioner "local-exec" {
-    command = "ansible-playbook -i inventory.ini playbook.yml"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu" # Update with your instance's user
+      private_key = file("~/.ssh/id_rsa") # Update with your private key path
+      host        = self.public_ip
+    }
   }
 
 }
