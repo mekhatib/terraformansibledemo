@@ -17,22 +17,21 @@ provider "aws" {
   region = var.region
 }
 
-data "aws_vpcs" "all" {
+# Fetch the first available VPC
+data "aws_vpcs" "available" {}
+
+# Fetch the first available subnet in the VPC
+data "aws_subnets" "available" {
   filter {
-    name   = "state"
-    values = ["available"]
+    name   = "vpc-id"
+    values = [data.aws_vpcs.available.ids[0]]
   }
 }
-
-data "aws_vpc" "first" {
-  id = data.aws_vpcs.all.ids[0]
-}
-
 
 resource "aws_instance" "example" {
   ami           = "ami-08a0d1e16fc3f61ea" # Replace with your desired AMI ID
   instance_type = "t2.micro"
-  subnet_id     = data.aws_vpc.first.default_subnet_id
+  subnet_id     = data.aws_subnets.available.ids[0]
   key_name = var.ssh_key_name
 
   provisioner "remote-exec" {
