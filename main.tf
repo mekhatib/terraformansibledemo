@@ -23,7 +23,7 @@ provider "hcp" {}
 
 data "doormat_aws_credentials" "creds" {
   provider = doormat
-  role_arn = "arn:aws:iam::${var.aws_account_id}:role/tfc-doormat-role_ansible"
+  role_arn = "arn:aws:iam::${var.aws_account_id}:role/tfc-doormat-role_5_nomad-cluster"
 }
 
 provider "aws" {
