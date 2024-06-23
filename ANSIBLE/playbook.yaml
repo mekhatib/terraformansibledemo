@@ -1,1 +1,15 @@
+---
+- name: Configure EC2 instance
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Apache
+      yum:
+        name: httpd
+        state: present
 
+    - name: Start Apache
+      service:
+        name: httpd
+        state: started
+        enabled: yes
