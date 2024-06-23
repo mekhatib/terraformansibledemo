@@ -28,10 +28,32 @@ data "aws_subnets" "available" {
   }
 }
 
+# Create a security group to allow inbound SSH traffic
+resource "aws_security_group" "allow_ssh" {
+  name        = "allow_ssh"
+  description = "Allow inbound SSH traffic"
+  vpc_id      = data.aws_vpc.selected.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_instance" "example" {
   ami           = "ami-08a0d1e16fc3f61ea" # Replace with your desired AMI ID
   instance_type = "t2.micro"
   subnet_id     = data.aws_subnets.available.ids[0]
+  security_groups = [aws_security_group.allow_ssh.name]
   key_name = var.ssh_key_name
 
   provisioner "remote-exec" {
@@ -48,6 +70,6 @@ resource "aws_instance" "example" {
   }
 
   tags = {
-    Name = "ExampleInstance"
+    Name = "MahilInstance"
   }
 }
