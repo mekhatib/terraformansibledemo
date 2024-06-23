@@ -11,20 +11,34 @@ terraform {
   }
 
 }
+# main.tf
 
 provider "aws" {
-  region     = var.region
+  region = var.region
 }
 
-resource "aws_instance" "example" {
-  ami           = "ami-04b70fa74e45c3917" # Amazon Linux 2 AMI
+data "aws_vpc" "default" {
+  default = true
+}
+
+resource "aws_instance" "web" {
+  ami           = "ami-0c55b159cbfafe1f0" # Change to your desired AMI
   instance_type = "t2.micro"
+  subnet_id     = data.aws_vpc.default.default_network_acl_id
 
   tags = {
-    Name = "Terraform-Ansible-Demo"
+    Name = "WebServer"
+  }
+
+  provisioner "local-exec" {
+    command = "ansible-playbook -i inventory.ini playbook.yml"
   }
 }
 
-output "instance_ip" {
-  value = aws_instance.example.public_ip
+output "instance_id" {
+  value = aws_instance.web.id
+}
+
+output "public_ip" {
+  value = aws_instance.web.public_ip
 }
