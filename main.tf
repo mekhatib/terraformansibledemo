@@ -16,10 +16,8 @@ provider "aws" {
   region     = var.region
 }
 
-
-
 resource "aws_instance" "example" {
-  ami           = "ami-06f59e43b31a49ecc" # Amazon Linux 2 AMI
+  ami           = "ami-04b70fa74e45c3917" # Amazon Linux 2 AMI
   instance_type = "t2.micro"
 
   tags = {
