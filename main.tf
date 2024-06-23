@@ -21,10 +21,14 @@ data "aws_vpc" "default" {
   default = true
 }
 
+data "aws_subnet_ids" "default" {
+  vpc_id = data.aws_vpc.default.id
+}
+
 resource "aws_instance" "web" {
   ami           = "ami-0c55b159cbfafe1f0" # Change to your desired AMI
   instance_type = "t2.micro"
-  subnet_id     = data.aws_vpc.default.default_network_acl_id
+  subnet_id     = data.aws_subnet_ids.default.ids[0] # Use the first subnet ID
 
   tags = {
     Name = "WebServer"
