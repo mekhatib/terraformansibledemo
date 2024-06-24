@@ -63,8 +63,8 @@ resource "aws_instance" "example" {
   instance_type = "t2.micro"
   key_name      = aws_key_pair.generated_key.key_name
   subnet_id     = aws_subnet.main.id
-  security_groups = [aws_security_group.instance.name]
-
+  #security_groups = [aws_security_group.instance.name]
+  vpc_security_group_ids = [aws_security_group.instance.id]
   associate_public_ip_address = true
 
   tags = {
