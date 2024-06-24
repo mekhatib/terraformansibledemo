@@ -2,10 +2,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
-provider "tower" {
+provider "ansible-tower" {
   host     = "https://aap.onmi.cloud:8443"
   username = "mahil"
-  password = "Magrebis1977$"
+  password = var.tower_password
 }
 
 resource "tls_private_key" "example" {
@@ -77,25 +77,25 @@ resource "aws_instance" "example" {
   }
 }
 
-resource "tower_project" "example" {
+resource "ansible-tower_project" "example" {
   name      = "Example Project"
   scm_type  = "git"
   scm_url   = "https://github.com/mekhatib/ansibledemo.git"
   scm_branch = "main"
 }
 
-resource "tower_inventory" "example" {
+resource "ansible-tower_inventory" "example" {
   name = "Example Inventory"
 }
 
-resource "tower_credential" "example" {
+resource "ansible-tower_credential" "example" {
   name     = "Example Credential"
   kind     = "ssh"
   username = "ec2-user"
   ssh_key_data = tls_private_key.example.private_key_pem
 }
 
-resource "tower_job_template" "nginx_install" {
+resource "ansible-tower_job_template" "nginx_install" {
   name          = "Install NGINX"
   inventory_id  = tower_inventory.example.id
   project_id    = tower_project.example.id
@@ -103,7 +103,7 @@ resource "tower_job_template" "nginx_install" {
   credential_id = tower_credential.example.id
 }
 
-resource "tower_job_launch" "nginx_install" {
+resource "ansible-tower_job_launch" "nginx_install" {
   job_template_id = tower_job_template.nginx_install.id
   extra_vars = jsonencode({
     ansible_host = aws_instance.example.public_ip

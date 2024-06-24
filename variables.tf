@@ -13,3 +13,8 @@ variable "ssh_private_key" {
   type        = string
   description = "The private key to use for SSH access"
 }
+
+variable "tower_password" {
+  type        = string
+  description = "The private key to use for SSH access"
+}
