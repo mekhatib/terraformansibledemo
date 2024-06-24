@@ -2,6 +2,12 @@ provider "aws" {
   region = "us-east-1"
 }
 
+provider "tower" {
+  host     = "https://aap.onmi.cloud:8443"
+  username = "mahil"
+  password = "Magrebis1977$"
+}
+
 resource "tls_private_key" "example" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -62,14 +68,46 @@ resource "aws_instance" "example" {
   ami           = "ami-08a0d1e16fc3f61ea" # Replace with your preferred AMI
   instance_type = "t2.micro"
   key_name      = aws_key_pair.generated_key.key_name
-  subnet_id     = aws_subnet.main.id
-  #security_groups = [aws_security_group.instance.name]
+  #subnet_id     = aws_subnet.main.id
   vpc_security_group_ids = [aws_security_group.instance.id]
   associate_public_ip_address = true
 
   tags = {
-    Name = "example-instance"
+    Name = "Demo-instance"
   }
+}
+
+resource "tower_project" "example" {
+  name      = "Example Project"
+  scm_type  = "git"
+  scm_url   = "https://github.com/mekhatib/ansibledemo.git"
+  scm_branch = "main"
+}
+
+resource "tower_inventory" "example" {
+  name = "Example Inventory"
+}
+
+resource "tower_credential" "example" {
+  name     = "Example Credential"
+  kind     = "ssh"
+  username = "ec2-user"
+  ssh_key_data = tls_private_key.example.private_key_pem
+}
+
+resource "tower_job_template" "nginx_install" {
+  name          = "Install NGINX"
+  inventory_id  = tower_inventory.example.id
+  project_id    = tower_project.example.id
+  playbook      = "install_nginx.yml"
+  credential_id = tower_credential.example.id
+}
+
+resource "tower_job_launch" "nginx_install" {
+  job_template_id = tower_job_template.nginx_install.id
+  extra_vars = jsonencode({
+    ansible_host = aws_instance.example.public_ip
+  })
 }
 
 output "instance_public_ip" {
@@ -78,5 +116,5 @@ output "instance_public_ip" {
 
 output "private_key_pem" {
   value     = tls_private_key.example.private_key_pem
-  #sensitive = true
+  sensitive = true
 }
