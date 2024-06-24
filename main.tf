@@ -18,6 +18,15 @@ provider "aap" {
   insecure_skip_verify = true
 }
 
+resource "aap_inventory" "sample_foo" {
+  name        = "My new inventory foo"
+  description = "A new inventory for testing"
+  variables = jsonencode(
+    {
+      "foo" : "bar"
+    }
+  )
+}
 
 resource "tls_private_key" "example" {
   algorithm = "RSA"
