@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aap = {
+      source = "ansible/aap"
+    }
+  }
+}
+
 provider "aws" {
   region = "us-east-1"
 }
