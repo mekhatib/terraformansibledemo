@@ -106,6 +106,16 @@ resource "aap_host" "example_host" {
     "ansible_host": aws_instance.example.public_ip
   })
 }
+#JOB KICKOFF
+resource "aap_job" "example_job" {
+  job_template_id = "16" # Replace with your actual job template ID
+  inventory_id    = aap_inventory.my_inventory.id
+  extra_vars = jsonencode({
+    ansible_host: aws_instance.example.public_ip
+  })
+
+  depends_on = [aap_host.example_host]
+}
 
 output "instance_public_ip" {
   value = aws_instance.example.public_ip
