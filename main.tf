@@ -18,12 +18,6 @@ provider "aap" {
   insecure_skip_verify = true
 }
 
-resource "aap_inventory" "my_inventory" {
-  name         = "tf inventory"
-  description  = "A new inventory for testing"
-  organization = 2
-}
-
 resource "tls_private_key" "example" {
   algorithm = "RSA"
   rsa_bits  = 4096
