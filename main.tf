@@ -22,11 +22,6 @@ resource "aap_inventory" "my_inventory" {
   name         = "Mahil TF Inventory"
   description  = "A new inventory for testing"
   organization = 2
-  variables = jsonencode(
-    {
-      "foo" : "bar"
-    }
-  )
 }
 
 # Add the EC2 instance's IP to the AAP inventory
