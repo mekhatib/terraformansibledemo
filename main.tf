@@ -85,7 +85,7 @@ resource "aws_security_group" "instance" {
 }
 
 resource "aws_instance" "example" {
-  ami           = "ami-08a0d1e16fc3f61ea" # Replace with your preferred AMI
+  ami           = "ami-04b70fa74e45c3917" # Replace with your preferred AMI
   instance_type = "t2.micro"
   key_name      = aws_key_pair.generated_key.key_name
   subnet_id     = aws_subnet.main.id
