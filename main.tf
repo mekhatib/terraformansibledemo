@@ -33,7 +33,7 @@ resource "aap_inventory" "my_inventory" {
 resource "aap_host" "example_host" {
   name        = "EC2Instance-${aws_instance.example.id}"
   description = "Host created from EC2 instance"
-  inventory   = aap_inventory.my_inventory.id
+  inventory_id   = aap_inventory.my_inventory.id
   variables   = jsonencode({
     "ansible_host": aws_instance.example.public_ip
   })
