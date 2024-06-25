@@ -24,17 +24,6 @@ resource "aap_inventory" "mahil_inventory" {
   organization = 2
 }
 
-# Add the EC2 instance's IP to the AAP inventory
-resource "aap_host" "example_host" {
-  name        = "EC2Instance-${aws_instance.example.id}"
-  description = "Host created from EC2 instance"
-  inventory_id   = aap_inventory.mahil_inventory.id
-  variables   = jsonencode({
-    "ansible_host": aws_instance.example.public_ip
-  })
-}
-
-
 resource "tls_private_key" "example" {
   algorithm = "RSA"
   rsa_bits  = 4096
