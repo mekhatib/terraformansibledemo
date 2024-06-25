@@ -18,8 +18,8 @@ provider "aap" {
   insecure_skip_verify = true
 }
 
-resource "aap_inventory" "mahil_inventory" {
-  name         = "Mahil TF Inventory"
+resource "aap_inventory" "my_inventory" {
+  name         = "tf inventory"
   description  = "A new inventory for testing"
   organization = 2
 }
