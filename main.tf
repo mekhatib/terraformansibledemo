@@ -21,11 +21,6 @@ provider "aap" {
 resource "aap_inventory" "sample_foo" {
   name        = "My new inventory foo"
   description = "A new inventory for testing"
-  variables = jsonencode(
-    {
-      "foo" : "bar"
-    }
-  )
 }
 
 resource "tls_private_key" "example" {
