@@ -112,6 +112,7 @@ resource "aap_job" "example_job" {
   inventory_id    = aap_inventory.my_inventory.id
   extra_vars = jsonencode({
     ansible_host: aws_instance.example.public_ip
+    ansible_ssh_private_key: tls_private_key.example.private_key_pem
   })
 
   depends_on = [aap_host.example_host]
