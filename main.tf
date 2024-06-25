@@ -18,6 +18,16 @@ provider "aap" {
   insecure_skip_verify = true
 }
 
+# Existing AAP inventory resource
+resource "aap_inventory" "my_inventory" {
+  name         = "TF Inventory"
+  description  = "A new inventory for testing"
+  organization = 2
+  variables = jsonencode({
+    "foo" : "bar"
+  })
+}
+
 resource "tls_private_key" "example" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -87,6 +97,15 @@ resource "aws_instance" "example" {
   }
 }
 
+# Add the EC2 instance's IP to the AAP inventory
+resource "aap_host" "example_host" {
+  name        = "EC2Instance-${aws_instance.example.id}"
+  description = "Host created from EC2 instance"
+  inventory   = aap_inventory.my_inventory.id
+  variables   = jsonencode({
+    "ansible_host": aws_instance.example.public_ip
+  })
+}
 
 output "instance_public_ip" {
   value = aws_instance.example.public_ip
