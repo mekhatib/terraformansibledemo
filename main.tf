@@ -37,11 +37,6 @@ resource "aap_inventory" "my_inventory" {
   name         = "TF Inventory"
   description  = "A new inventory for testing"
   organization = 2
-  variables = jsonencode({
-    "foo" : "bar"
-    ansible_ssh_private_key: tls_private_key.example.private_key_pem
-    ansible_user: "ubuntu" # Add the username here
-  })
 }
 
 resource "tls_private_key" "example" {
@@ -127,7 +122,7 @@ resource "awx_credential_machine" "example" {
 resource "awx_job_template" "baseconfig" {
   name           = "Base Service Configuration"
   job_type       = "run"
-  inventory_id   = aap_inventory.my_inventory.id
+  inventory_id   = #aap_inventory.my_inventory.id
   project_id     = "14"
   playbook       = "install_nginx.yml"
   become_enabled = true
