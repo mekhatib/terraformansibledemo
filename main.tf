@@ -154,7 +154,6 @@ depends_on = [aap_host.example_host]
 
 }
 
-
 resource "awx_job_template_credential" "baseconfig" {
   job_template_id = awx_job_template.baseconfig.id
   credential_id   = awx_credential_machine.example.id
