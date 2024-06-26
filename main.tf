@@ -127,7 +127,7 @@ resource "awx_credential_machine" "example" {
 resource "awx_job_template" "baseconfig" {
   name           = "Base Service Configuration"
   job_type       = "run"
-  inventory_id   = my_inventory.default.id
+  inventory_id   = my_inventory.id
   project_id     = awx_project.base_service_config.id
   playbook       = "install_nginx.yml"
   become_enabled = true
@@ -135,7 +135,7 @@ resource "awx_job_template" "baseconfig" {
 
 
 resource "awx_job_template_credential" "baseconfig" {
-  job_template_id = base_service_config.id
+  job_template_id = baseconfig.id
   credential_id   = awx_credential_machine.example.id
 }
 
