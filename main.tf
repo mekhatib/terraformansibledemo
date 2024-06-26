@@ -122,7 +122,7 @@ resource "awx_credential_machine" "example" {
 resource "awx_job_template" "baseconfig" {
   name           = "Base Service Configuration"
   job_type       = "run"
-  inventory_id   = 11 #aap_inventory.my_inventory.id
+  inventory_id   = aap_inventory.my_inventory.id
   project_id     = "14"
   playbook       = "install_nginx.yml"
   become_enabled = true
