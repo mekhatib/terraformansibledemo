@@ -103,10 +103,18 @@ resource "aws_instance" "example" {
   vpc_security_group_ids = [aws_security_group.instance.id]
   associate_public_ip_address = true
 
+  user_data = <<-EOF
+              #!/bin/bash
+              # Commands to initialize your instance
+              touch /var/tmp/instance_ready
+              EOF
+
   tags = {
     Name = "Demo-instance"
+
   }
 }
+
 
 ##################awx needed to create credential##################
 
@@ -135,6 +143,8 @@ depends_on = [aap_host.example_host]
 resource "awx_job_template_credential" "baseconfig" {
   job_template_id = awx_job_template.baseconfig.id
   credential_id   = awx_credential_machine.example.id
+
+  depends_on = [aws_instance.example]
 }
 
 ###################################################################
