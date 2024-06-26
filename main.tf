@@ -126,6 +126,9 @@ resource "awx_job_template" "baseconfig" {
   project_id     = "14"
   playbook       = "install_nginx.yml"
   become_enabled = true
+
+depends_on = [aap_host.example_host]
+
 }
 
 
@@ -146,17 +149,17 @@ resource "aap_host" "example_host" {
   })
 }
 #JOB KICKOFF
-resource "aap_job" "example_job" {
-  job_template_id = "16" # Replace with your actual job template ID
-  inventory_id    = aap_inventory.my_inventory.id
-  extra_vars = jsonencode({
-    ansible_host: aws_instance.example.public_ip
-    ansible_ssh_private_key: tls_private_key.example.private_key_pem
-    ansible_user: "ec2-user" # Add the username here
-  })
+#resource "aap_job" "example_job" {
+#  job_template_id = "16" # Replace with your actual job template ID
+#  inventory_id    = aap_inventory.my_inventory.id
+#  extra_vars = jsonencode({
+#    ansible_host: aws_instance.example.public_ip
+#    ansible_ssh_private_key: tls_private_key.example.private_key_pem
+#    ansible_user: "ec2-user" # Add the username here
+#  })
 
-  depends_on = [aap_host.example_host]
-}
+#  depends_on = [aap_host.example_host]
+#}
 
 
 output "instance_public_ip" {
