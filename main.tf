@@ -128,7 +128,7 @@ resource "awx_job_template" "baseconfig" {
   name           = "Base Service Configuration"
   job_type       = "run"
   inventory_id   = my_inventory.id
-  project_id     = awx_project.base_service_config.id
+  project_id     = "14"
   playbook       = "install_nginx.yml"
   become_enabled = true
 }
