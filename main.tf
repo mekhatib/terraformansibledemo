@@ -115,6 +115,14 @@ resource "aws_instance" "example" {
   }
 }
 
+##############sleep for 30 seconds to allow instance to be ready##################
+
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [null_resource.previous]
+
+  create_duration = "30s"
+}
+
 
 ##################awx needed to create credential##################
 
@@ -165,7 +173,7 @@ resource "aap_job" "example_job" {
    inventory_id    = aap_inventory.my_inventory.id
   
 
-   depends_on = [aap_host.example_host]
+   depends_on = [time_sleep.wait_30_seconds]
 }
 
 
