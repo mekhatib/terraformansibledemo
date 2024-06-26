@@ -16,7 +16,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-
 provider "aap" {
   host                 = "https://aap.onmi.cloud:8443"
   username             = "mahil"
@@ -125,8 +124,18 @@ resource "awx_credential_machine" "example" {
   
 }
 
+resource "awx_job_template" "baseconfig" {
+  name           = "Base Service Configuration"
+  job_type       = "run"
+  inventory_id   = my_inventory.default.id
+  project_id     = awx_project.base_service_config.id
+  playbook       = "install_nginx.yml"
+  become_enabled = true
+}
+
+
 resource "awx_job_template_credential" "baseconfig" {
-  job_template_id = "16"
+  job_template_id = base_service_config.id
   credential_id   = awx_credential_machine.example.id
 }
 
