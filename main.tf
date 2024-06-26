@@ -3,8 +3,14 @@ terraform {
     aap = {
       source = "ansible/aap"
     }
+    awx = {
+      source = "denouche/awx"
+      version = "0.27.0"
+    }
   }
-}
+
+  }
+
 
 provider "aws" {
   region = "us-east-1"
