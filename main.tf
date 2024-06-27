@@ -147,7 +147,8 @@ resource "awx_job_template" "baseconfig" {
   job_type       = "run"
   inventory_id   = aap_inventory.my_inventory.id
   project_id     = "14"
-  playbook       = "install_nginx.yml"
+  playbook       = "install_jenkins.yaml" # jenkins playbook
+  #playbook       = "install_nginx.yml" # nginx playbook
   become_enabled = true
 
 depends_on = [aap_host.example_host]
